@@ -1,9 +1,9 @@
-const loadAllPost=async()=>{
+const loadAllPost=async(text)=>{
     const res = await fetch('https://openapi.programming-hero.com/api/retro-forum/posts');
     const data =await res.json();
    const posts =data.posts;
   
-   console.log(posts);
+   
    console.log();
    showPosts(posts);
 }
@@ -11,6 +11,7 @@ const loadAllPost=async()=>{
 loadAllPost();
 const showPosts=(posts)=>{
     posts.forEach(post => {
+      
         if(post.isActive){
               const allPostContainer=document.getElementById('allPostContainer');
       const postContainer=document.createElement('div');
@@ -85,7 +86,7 @@ postContainer.innerHTML= `
               </div>
              </div>
 ` 
- allPostContainer.appendChild(postContainer)
+ allPostContainer.appendChild(postContainer);
         }
         else{
               const allPostContainer=document.getElementById('allPostContainer');
@@ -161,13 +162,15 @@ postContainer.innerHTML= `
               </div>
              </div>
 ` 
- allPostContainer.appendChild(postContainer)
+ allPostContainer.appendChild(postContainer);
+   
         }
-    
+  
     });
 
-
+loadingBar(false);
 }
+
 const markedBtn=(view_count,comment_count)=>{
 
 const markedListContainer=document.getElementById('markedListContainer');
@@ -198,4 +201,78 @@ console.log('ok');
 }
 const activeIcon=(active)=>{
 console.log(active.isActive);
+}
+const loadLatestPost=async ()=>{
+const res=await fetch('https://openapi.programming-hero.com/api/retro-forum/latest-posts');
+const datas=await res.json();
+console.log(datas);
+
+showLatestPost(datas);
+}
+loadLatestPost();
+const showLatestPost=(datas)=>{
+
+
+  datas.forEach(post => {
+    const latestPostContainer=document.getElementById('latestPostContainer');
+    const div=document.createElement('div');
+    div.innerHTML=`
+             <div class="card bg-base-100 w-96 shadow-sm">
+  <figure class="px-10 pt-10">
+    <img
+      src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+      alt="Shoes"
+      class="rounded-xl" />
+  </figure>
+  <div class="card-body ">
+    <div class=" flex-row space-x-3 inline-flex">
+      <img class="w-5 h-5" src="https://img.icons8.com/?size=100&id=8yG2a6v2mm3S&format=png&color=000000" alt="" srcset="">
+      <p class="text-[#12132D99] font-normal text-[20px]">Publish Date:${post.author?.posted_date||"No Published Date"}</p>
+    </div>
+    <p class="font-bold text-[15px] text-[#12132D]">${post.title}</p>
+    <p class="text-xs text-[#12132D99] font-normal">${post.description} </p>
+    <div class="flex flex-row">
+      <div>
+<img class="h-10 w-10" src="https://img.icons8.com/?size=100&id=108652&format=png&color=000000" alt="" srcset="">
+      </div >
+      <div>
+        <p class="text-[#12132D] text-[15px] font-semibold">${post.author.name}</p>
+        <p class="text-[#12132D99] text-xs font-normal">${post.author.designation}</p>
+      </div>
+    </div>
+    
+  </div>
+</div>
+    `
+    latestPostContainer.appendChild(div);
+  }); 
+
+}
+const getSearchedText=()=>{
+    const searchBtn=document.getElementById('inputField');
+    search(searchBtn.value);
+console.log(searchBtn.value);
+}
+const search=async(text)=>{
+  const res=await fetch(`https://openapi.programming-hero.com/api/retro-forum/posts?category=${text}`)
+  const data=await res.json();
+ const searchBtn=document.getElementById('inputField');
+ console.log(data);
+ const post=data.posts;
+        const allPostContainer=document.getElementById('allPostContainer');
+        allPostContainer.textContent='';
+        loadingBar(true);
+ showPosts(post);
+ 
+
+}
+const loadingBar=(isActive)=>{
+if(isActive){
+  const loadingBar=document.getElementById('loadingBar');
+loadingBar.classList.remove('hidden');
+}
+else{
+  const loadingBar=document.getElementById('loadingBar');
+loadingBar.classList.add('hidden');
+}
 }
