@@ -1,10 +1,90 @@
-const hoverButton =()=>{
-    const buttions=document.querySelectorAll('navBtn');
-    buttions.forEach(buttion=>
-    {
-        buttion.addEventListener('mouseover'()=>{
-            console.log(ok)
-        })
-    }
-    )
+const loadAllPost=async()=>{
+    const res = await fetch('https://openapi.programming-hero.com/api/retro-forum/posts');
+    const data =await res.json();
+   const posts =data.posts;
+  
+   console.log(posts);
+   console.log(posts[0].id);
+   showPosts(posts);
+}
+
+loadAllPost();
+const showPosts=(posts)=>{
+    posts.forEach(post => {
+      const allPostContainer=document.getElementById('allPostContainer');
+      const postContainer=document.createElement('div');
+      postContainer.classList=`m-[1px] lg:m-15 p-4 flex flex-row justify-around`
+postContainer.innerHTML= `
+ <!-- image section -->
+            <div class=" flex flex-row justify-around  rounded-lg bg-slate-200  lg:space-x-3 lg:space-y-8">
+              <div>
+                <div class="hidden m-3 w-2 h-2 lg:w-4 lg:h-4 rounded-[50%] bg-[#10B981]"></div>
+                <div class="w-2 h-2 m-2 lg:h-4 lg:w-4 rounded-[50%] bg-[#14513d]"></div>
+                <img class="" src="https://img.icons8.com/?size=100&id=111402&format=png&color=000000" alt="" srcset="">
+                
+              </div>
+              <!-- icons and text -->
+              <div>
+                <div class="flex flex-row space-x-2 lg:space-x-4 text-[#12132DCC] font-medium text-xs lg:text-[14px]">
+                  <p># ${post.category}</p>
+                  <p>Author:${post.author.name}</p>
+                </div>
+                <h1 class="text-[#12132D] font-bold text-xs text-wrap lg:text-xl">${post.title}</h1>
+                <p>It’s one thing to subject yourself to ha Halloween costume mishap because, hey that’s your prerogative</p>
+
+                <!-- icon section -->
+               <div class="flex justify-around">
+                 <div class="flex flex-row space-x-4">
+                   <div>
+                <div class="flex space-x-2 my-3 ">
+                  <div class="w-5 h-5" >
+                    <img src="https://img.icons8.com/?size=100&id=8HTa4knTIFEw&format=png&color=000000" alt="" srcset="">
+                  </div>
+                  <p class="text-[#12132D99] text-[15px] font-normal">
+                     ${post.comment_count}
+                  </p>
+                </div>
+               
+              </div>
+                  <div>
+                <div class="flex space-x-2 my-3 ">
+                  <div class="w-5 h-5" >
+                    <img src="https://img.icons8.com/?size=100&id=986&format=png&color=000000" alt="" srcset="">
+                  </div>
+                  <p class="text-[#12132D99] text-[15px] font-normal">
+                  ${post.view_count}
+                  </p>
+                </div>
+              
+
+                </div>
+              </div>
+                  <div>
+                <div onclick="" class="flex space-x-2 my-3 ">
+                  <div class="w-5 h-5" >
+                    <img src="https://img.icons8.com/?size=100&id=34&format=png&color=000000" alt="" srcset="">
+                  </div>
+                  <p class="text-[#12132D99] text-[15px] font-normal">
+                    ${post.posted_time}
+                  </p>
+                </div>
+               
+                <!-- read button -->
+                 <div>
+                    <div class="w-5 h-5 my-3 flex-none hover:bg-red-500 bg-red-500 rounded-[50%] ">
+                <img src="https://img.icons8.com/?size=100&id=124383&format=png&color=000000" alt="" srcset="">
+              </div> 
+                 </div>
+               </div>
+               
+              </div>
+             
+            </div>
+          
+              </div>
+             </div>
+` 
+ allPostContainer.appendChild(postContainer)
+    });
+
 }
